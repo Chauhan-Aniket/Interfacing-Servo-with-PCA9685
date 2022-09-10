@@ -43,5 +43,10 @@ int angleToPulse(int ang)
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
+  // TODO: run servo one by one
+  for (int angle = 0; angle <= 180; angle++)
+  {
+    pwm.setPWM(servonum, 0, angleToPulse(angle));
+    delay(10);
+  }
 }
