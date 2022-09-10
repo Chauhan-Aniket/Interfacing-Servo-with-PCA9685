@@ -49,4 +49,19 @@ void loop()
     pwm.setPWM(servonum, 0, angleToPulse(angle));
     delay(10);
   }
+
+  // TODO: run all servo at together
+  for (int angle = 0; angle <= 180; angle++)
+  {
+    for (int i = 0; i < totalServo; i++)
+    {
+      pwm.setPWM(i, 0, angleToPulse(angle));
+    }
+  }
+
+  delay(50);
+
+  servonum++;
+  if (servonum > totalServo)
+    servonum = 0;
 }
