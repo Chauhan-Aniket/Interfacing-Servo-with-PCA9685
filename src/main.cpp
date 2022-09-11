@@ -93,6 +93,12 @@ void loop()
     }
   }
 
+  // TODO: run servo in sine wave
+  float freq = 0.0005;
+  float theta = millis() * freq;
+  int amplitude = 180;
+  pwm.setPWM(servonum, 0, angleToPulse(amplitude * sin(theta))); // based on Asin(ωθ)
+
   delay(50);
 
   servonum++;
