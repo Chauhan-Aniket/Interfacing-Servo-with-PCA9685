@@ -12,6 +12,8 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define SERVOMIN 150  // This is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX 600  // This is the 'maximum' pulse length count (out of 4096)
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
+#define USMIN 0       // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
+#define USMAX 3000    // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
 
 int servonum = 0;
 int totalServo = 16;
@@ -70,6 +72,25 @@ void loop()
   {
     pwm.setPWM(servonum, 0, pulselen);
     delay(1);
+  }
+
+  // TODO: run all servo at together using writeMicroseconds(), it's not precise due to calculation rounding! The writeMicroseconds() function is used to mimic the Arduino Servo library writeMicroseconds() behavior.
+  for (uint16_t microsec = USMIN; microsec < USMAX; microsec += 10)
+  {
+    for (int i = 0; i < totalServo; i++)
+    {
+      pwm.writeMicroseconds(i, microsec);
+      delay(2);
+    }
+  }
+
+  for (uint16_t microsec = USMAX; microsec > USMIN; microsec -= 10)
+  {
+    for (int i = 0; i < totalServo; i++)
+    {
+      pwm.writeMicroseconds(i, microsec);
+      delay(2);
+    }
   }
 
   delay(50);
